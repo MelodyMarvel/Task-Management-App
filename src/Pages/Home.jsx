@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Todos from "../Components/Todos";
 import DisplayTodos from "../Components/DisplayTodos";
-
+// import { useSelector, useDispatch } from "react-redux";
+// import { fetchTodos } from "../Store/TodoSlice";
 
 function getUser() {
   let user = localStorage.getItem("user");
@@ -30,6 +31,8 @@ function Home() {
   const [user, setUser] = useState(getUser());
   const [todos, setTodos] = useState(saveTodos()); // Set todos state
 
+  // const alltodos = useSelector((state) => state.todo.todos);
+  //   const dispatch= useDispatch()
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
@@ -42,16 +45,16 @@ function Home() {
   }, []);
 
   return (
-    <div>
+    <div className="main-wrapper">
       
       {user ? (
         <div>
 
           <header className="header">
             <h4>
-              Hello, {user.firstName} {user.lastName}
+              {user.firstName} {user.lastName}
             </h4>
-            <button className="btn btn-secondary btn-md" onClick={handleLogout}>
+            <button className="btn btn-md" onClick={handleLogout}>
               LOGOUT
             </button>
           </header>

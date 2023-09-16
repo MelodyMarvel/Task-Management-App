@@ -1,15 +1,29 @@
 // import React from 'react'
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { addTodo } from "../Store/TodoSlice";
+import { useDispatch } from "react-redux";
+import { addTodo, fetchTodos } from "../Store/TodoSlice";
 import { GoPlus } from "react-icons/go";
+import toast from 'react-hot-toast';
 
 function Todos() {
   const [todo, setTodo] = useState("");
   const dispatch = useDispatch();
-  const {todos} = useSelector((state) => state.todo);//We use useSelector to access the state fro store
+  // const {todos} = useSelector((state) => state.todo);//We use useSelector to access the state fro store
 
+  useEffect(() => {
+    // Check if there are todos in local storage
+    const localTodos = JSON.parse(localStorage.getItem("todo"));
 
+    if (localTodos && localTodos.length > 0) {
+      // Use local todos if they exist
+      dispatch({ type: "todo/setTodos", payload: localTodos });
+    } else {
+      // Fetch todos from the server if local todos don't exist
+      dispatch(fetchTodos());
+    }
+  }, [dispatch]);
+
+  
   const handleAddTodos = () => {
     if (!todo.trim()) {
       alert("Please enter a task");
@@ -25,18 +39,11 @@ function Todos() {
 
     // Dispatch the addTodo action with the new todo
     dispatch(addTodo(newTodo));
+    toast.success('Task added successfully');
     setTodo("");
-
-    // dispatch(fetchTodos());
-
-    // // Update local storage
-    // const updatedTodos = [...todos, newTodo];
-    // localStorage.setItem("todo", JSON.stringify(updatedTodos));
   };
 
-  useEffect(() => {
-    console.log("todos:", todos);
-  }, []);
+  
 
   return (
     <div className="addTodos">

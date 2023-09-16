@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { completeTodos, removeTodos, updateTodos } from "../Store/TodoSlice";
 import TodoItem from "./TodoItem";
+import toast from 'react-hot-toast';
 
 
 function DisplayTodos() {
@@ -15,6 +16,8 @@ function DisplayTodos() {
       dispatch(removeTodos(id));
     }
     dispatch(removeTodos(id));
+    toast.success('Task Deleted Successfully')
+
   };
 
   const handleUpdateTodo = (id, updatedItem) => {
@@ -23,6 +26,7 @@ function DisplayTodos() {
 
   const handleCompleteTodo = (id) => {
     dispatch(completeTodos({ id }));
+    toast.success('Task Completed Successfully')
   };
 
   const isActive = (filter) => filter === sort; // Check if the filter matches the current sort
@@ -65,7 +69,7 @@ function DisplayTodos() {
           All
         </button>
       </div>
-      <ul>
+      {/* <ul> */}
         {filteredTodos.length > 0
           ? filteredTodos.map((todo) => (
               <TodoItem
@@ -78,7 +82,7 @@ function DisplayTodos() {
             ))
           : null}
 
-      </ul>
+      {/* </ul> */}
 
     </div>
   );
